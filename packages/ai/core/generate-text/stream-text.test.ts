@@ -3428,13 +3428,21 @@ describe('streamText', () => {
               }
 
               // assuming test arg structure:
-              if (chunk.type === 'tool-call' && chunk.toolName === 'value' && typeof chunk.args === 'string') {
+              if (
+                chunk.type === 'tool-call' &&
+                chunk.toolName === 'value' &&
+                typeof chunk.args === 'string'
+              ) {
                 chunk.args = chunk.args.toUpperCase() as any;
               }
 
-              if (chunk.type === 'tool-result' && chunk.toolName === 'value' && typeof chunk.args === 'string') {
+              if (
+                chunk.type === 'tool-result' &&
+                chunk.toolName === 'value' &&
+                typeof chunk.args === 'string'
+              ) {
                 chunk.result = chunk.result.toUpperCase();
-                  chunk.args = chunk.args.toUpperCase() as any;
+                chunk.args = chunk.args.toUpperCase() as any;
               }
 
               if (chunk.type === 'step-finish') {
