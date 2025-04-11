@@ -1,5 +1,14 @@
 # @ai-sdk/groq
 
+## 2.0.0-canary.7
+
+### Patch Changes
+
+- ebeac90: chore(providers/groq): convert to providerOptions
+- Updated dependencies [411e483]
+  - @ai-sdk/provider@2.0.0-canary.5
+  - @ai-sdk/provider-utils@3.0.0-canary.6
+
 ## 2.0.0-canary.6
 
 ### Patch Changes

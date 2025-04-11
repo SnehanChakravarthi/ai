@@ -1,5 +1,14 @@
 # @ai-sdk/openai-compatible
 
+## 1.0.0-canary.6
+
+### Patch Changes
+
+- 6db02c9: chore(openai-compatible): remove simulateStreaming
+- Updated dependencies [411e483]
+  - @ai-sdk/provider@2.0.0-canary.5
+  - @ai-sdk/provider-utils@3.0.0-canary.6
+
 ## 1.0.0-canary.5
 
 ### Patch Changes

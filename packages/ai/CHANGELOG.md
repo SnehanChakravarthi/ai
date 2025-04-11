@@ -1,5 +1,18 @@
 # ai
 
+## 5.0.0-canary.7
+
+### Major Changes
+
+- 6fba4c7: chore (ai): remove deprecated experimental_providerMetadata
+
+### Patch Changes
+
+- 3e3b9df: fix (ai/mcp): better support for zero-argument MCP tools
+- Updated dependencies [411e483]
+  - @ai-sdk/provider@2.0.0-canary.5
+  - @ai-sdk/provider-utils@3.0.0-canary.6
+
 ## 5.0.0-canary.6
 
 ### Patch Changes

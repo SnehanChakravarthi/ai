@@ -1,5 +1,18 @@
 # @ai-sdk/openai
 
+## 2.0.0-canary.6
+
+### Patch Changes
+
+- 948b755: chore(providers/openai): convert to providerOptions
+- 3b1ea10: adding support for gpt-4o-search-preview and handling unsupported parameters
+- 442be08: fix: propagate openai transcription fixes
+- 5147e6e: chore(openai): remove simulateStreaming
+- c2b92cc: chore(openai): remove legacy function calling
+- Updated dependencies [411e483]
+  - @ai-sdk/provider@2.0.0-canary.5
+  - @ai-sdk/provider-utils@3.0.0-canary.6
+
 ## 2.0.0-canary.5
 
 ### Patch Changes

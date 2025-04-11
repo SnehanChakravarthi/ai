@@ -1,5 +1,13 @@
 # @ai-sdk/valibot
 
+## 1.0.0-canary.7
+
+### Patch Changes
+
+- Updated dependencies [6fba4c7]
+- Updated dependencies [3e3b9df]
+  - ai@5.0.0-canary.7
+
 ## 1.0.0-canary.6
 
 ### Patch Changes

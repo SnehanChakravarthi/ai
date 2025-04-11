@@ -1,5 +1,11 @@
 # @ai-sdk/provider
 
+## 2.0.0-canary.5
+
+### Major Changes
+
+- 411e483: chore (provider): refactor usage (language model v2)
+
 ## 2.0.0-canary.4
 
 ### Major Changes
