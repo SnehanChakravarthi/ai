@@ -17,7 +17,6 @@ import { uploadAssemblyAIFile } from './assemblyai-storage';
 
 // https://www.assemblyai.com/docs/api-reference/transcripts/submit
 const assemblyaiProviderOptionsSchema = z.object({
-  audioUrl: z.string().nullish(),
   audioEndAt: z.number().int().nullish(),
   audioStartFrom: z.number().int().nullish(),
   autoChapters: z.boolean().nullish(),
