@@ -47,7 +47,8 @@ export function prepareToolsAndToolChoice<TOOLS extends ToolSet>({
             type: 'function' as const,
             name,
             description: tool.description,
-            parameters: tool.parameters != null && asSchema(tool.parameters).jsonSchema,
+            parameters:
+              tool.parameters != null && asSchema(tool.parameters).jsonSchema,
           };
         case 'provider-defined':
           return {
