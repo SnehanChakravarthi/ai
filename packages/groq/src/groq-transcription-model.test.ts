@@ -35,9 +35,7 @@ describe('doGenerate', () => {
             start: 0,
             end: 2.48,
             text: 'Hello world!',
-            tokens: [
-              50365, 2425, 490, 264,
-            ],
+            tokens: [50365, 2425, 490, 264],
             temperature: 0,
             avg_logprob: -0.29010406,
             compression_ratio: 0.7777778,
@@ -81,7 +79,7 @@ describe('doGenerate', () => {
     });
 
     expect(server.calls[0].requestHeaders).toMatchObject({
-      'authorization': 'Bearer test-api-key',
+      authorization: 'Bearer test-api-key',
       'content-type': expect.stringMatching(
         /^multipart\/form-data; boundary=----formdata-undici-\d+$/,
       ),

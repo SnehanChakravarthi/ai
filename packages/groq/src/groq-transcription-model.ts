@@ -21,7 +21,7 @@ const groqProviderOptionsSchema = z.object({
   prompt: z.string().nullish(),
   responseFormat: z.string().nullish(),
   temperature: z.number().min(0).max(1).nullish(),
-  timestampGranularities: z.array(z.string()).nullish()
+  timestampGranularities: z.array(z.string()).nullish(),
 });
 
 export type GroqTranscriptionCallOptions = z.infer<
@@ -72,12 +72,16 @@ export class GroqTranscriptionModel implements TranscriptionModelV1 {
 
     // Add provider-specific options
     if (groqOptions) {
-      const transcriptionModelOptions: Omit<GroqTranscriptionAPITypes, 'model'> = {
+      const transcriptionModelOptions: Omit<
+        GroqTranscriptionAPITypes,
+        'model'
+      > = {
         language: groqOptions.language ?? undefined,
         prompt: groqOptions.prompt ?? undefined,
         response_format: groqOptions.responseFormat ?? undefined,
         temperature: groqOptions.temperature ?? undefined,
-        timestamp_granularities: groqOptions.timestampGranularities ?? undefined,
+        timestamp_granularities:
+          groqOptions.timestampGranularities ?? undefined,
       };
 
       for (const key in transcriptionModelOptions) {
@@ -160,7 +164,7 @@ const groqTranscriptionResponseSchema = z.object({
       avg_logprob: z.number(),
       compression_ratio: z.number(),
       no_speech_prob: z.number(),
-    })
+    }),
   ),
   x_groq: z.object({
     id: z.string(),

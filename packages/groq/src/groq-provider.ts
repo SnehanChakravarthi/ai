@@ -97,9 +97,7 @@ export function createGroq(options: GroqProviderSettings = {}): GroqProvider {
     return createChatModel(modelId, settings);
   };
 
-  const createTranscriptionModel = (
-    modelId: GroqTranscriptionModelId
-  ) => {
+  const createTranscriptionModel = (modelId: GroqTranscriptionModelId) => {
     return new GroqTranscriptionModel(modelId, {
       provider: 'groq.transcription',
       url: ({ path }) => `${baseURL}${path}`,

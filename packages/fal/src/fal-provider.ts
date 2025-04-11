@@ -1,4 +1,9 @@
-import { ImageModelV1, NoSuchModelError, ProviderV1, TranscriptionModelV1 } from '@ai-sdk/provider';
+import {
+  ImageModelV1,
+  NoSuchModelError,
+  ProviderV1,
+  TranscriptionModelV1,
+} from '@ai-sdk/provider';
 import type { FetchFunction } from '@ai-sdk/provider-utils';
 import { withoutTrailingSlash } from '@ai-sdk/provider-utils';
 import { FalImageModel } from './fal-image-model';

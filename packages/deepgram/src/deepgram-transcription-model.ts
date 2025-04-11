@@ -19,34 +19,34 @@ import { DeepgramTranscriptionAPITypes } from './deepgram-api-types';
 const deepgramProviderOptionsSchema = z.object({
   // Base parameters
   language: z.string().optional(),
-  
+
   // Formatting options
   smartFormat: z.boolean().optional(),
   punctuate: z.boolean().optional(),
   paragraphs: z.boolean().optional(),
-  
+
   // Summarization and analysis
   summarize: z.union([z.literal('v2'), z.literal(false)]).optional(),
   topics: z.boolean().optional(),
   intents: z.boolean().optional(),
   sentiment: z.boolean().optional(),
-  
+
   // Entity detection
   detectEntities: z.boolean().optional(),
-  
+
   // Redaction options
   redact: z.union([z.string(), z.array(z.string())]).optional(),
   replace: z.string().optional(),
-  
+
   // Search and keywords
   search: z.string().optional(),
   keyterm: z.string().optional(),
-  
+
   // Speaker-related features
   diarize: z.boolean().optional(),
   utterances: z.boolean().optional(),
   uttSplit: z.number().optional(),
-  
+
   // Miscellaneous
   fillerWords: z.boolean().optional(),
 });
@@ -147,10 +147,13 @@ export class DeepgramTranscriptionModel implements TranscriptionModelV1 {
       responseHeaders,
       rawValue: rawResponse,
     } = await postFormDataToApi({
-      url: this.config.url({
-        path: '/v1/listen',
-        modelId: this.modelId,
-      }) + '?' + queryParams.toString(),
+      url:
+        this.config.url({
+          path: '/v1/listen',
+          modelId: this.modelId,
+        }) +
+        '?' +
+        queryParams.toString(),
       headers: combineHeaders(this.config.headers(), options.headers),
       formData,
       failedResponseHandler: deepgramFailedResponseHandler,
@@ -162,7 +165,8 @@ export class DeepgramTranscriptionModel implements TranscriptionModelV1 {
     });
 
     return {
-      text: response.results?.channels.at(0)?.alternatives.at(0)?.transcript ?? '',
+      text:
+        response.results?.channels.at(0)?.alternatives.at(0)?.transcript ?? '',
       segments:
         response.results?.channels[0].alternatives[0].words?.map(word => ({
           text: word.word,
@@ -242,5 +246,5 @@ const deepgramTranscriptionResponseSchema = z.object({
         }),
       ),
     })
-    .nullish()
+    .nullish(),
 });

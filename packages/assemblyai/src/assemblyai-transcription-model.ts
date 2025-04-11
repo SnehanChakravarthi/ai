@@ -208,7 +208,9 @@ const assemblyaiProviderOptionsSchema = z.object({
   speechThreshold: z.number().min(0).max(1).nullish(),
   summarization: z.boolean().nullish(),
   summaryModel: z.enum(['informative', 'conversational', 'catchy']).nullish(),
-  summaryType: z.enum(['bullets', 'bullets_verbose', 'gist', 'headline', 'paragraph']).nullish(),
+  summaryType: z
+    .enum(['bullets', 'bullets_verbose', 'gist', 'headline', 'paragraph'])
+    .nullish(),
   topics: z.array(z.string()).nullish(),
   webhookAuthHeaderName: z.string().nullish(),
   webhookAuthHeaderValue: z.string().nullish(),
@@ -270,7 +272,8 @@ export class AssemblyAITranscriptionModel implements TranscriptionModelV1 {
       body.auto_highlights = assemblyaiOptions.autoHighlights ?? undefined;
       body.boost_param = assemblyaiOptions.boostParam ?? undefined;
       body.content_safety = assemblyaiOptions.contentSafety ?? undefined;
-      body.content_safety_confidence = assemblyaiOptions.contentSafetyConfidence ?? undefined;
+      body.content_safety_confidence =
+        assemblyaiOptions.contentSafetyConfidence ?? undefined;
       body.custom_spelling = assemblyaiOptions.customSpelling ?? undefined;
       body.disfluencies = assemblyaiOptions.disfluencies ?? undefined;
       body.entity_detection = assemblyaiOptions.entityDetection ?? undefined;
@@ -278,16 +281,21 @@ export class AssemblyAITranscriptionModel implements TranscriptionModelV1 {
       body.format_text = assemblyaiOptions.formatText ?? undefined;
       body.iab_categories = assemblyaiOptions.iabCategories ?? undefined;
       body.language_code = assemblyaiOptions.languageCode ?? undefined;
-      body.language_confidence_threshold = assemblyaiOptions.languageConfidenceThreshold ?? undefined;
-      body.language_detection = assemblyaiOptions.languageDetection ?? undefined;
+      body.language_confidence_threshold =
+        assemblyaiOptions.languageConfidenceThreshold ?? undefined;
+      body.language_detection =
+        assemblyaiOptions.languageDetection ?? undefined;
       body.multichannel = assemblyaiOptions.multichannel ?? undefined;
       body.punctuate = assemblyaiOptions.punctuate ?? undefined;
       body.redact_pii = assemblyaiOptions.redactPii ?? undefined;
       body.redact_pii_audio = assemblyaiOptions.redactPiiAudio ?? undefined;
-      body.redact_pii_audio_quality = assemblyaiOptions.redactPiiAudioQuality ?? undefined;
-      body.redact_pii_policies = assemblyaiOptions.redactPiiPolicies ?? undefined;
+      body.redact_pii_audio_quality =
+        assemblyaiOptions.redactPiiAudioQuality ?? undefined;
+      body.redact_pii_policies =
+        assemblyaiOptions.redactPiiPolicies ?? undefined;
       body.redact_pii_sub = assemblyaiOptions.redactPiiSub ?? undefined;
-      body.sentiment_analysis = assemblyaiOptions.sentimentAnalysis ?? undefined;
+      body.sentiment_analysis =
+        assemblyaiOptions.sentimentAnalysis ?? undefined;
       body.speaker_labels = assemblyaiOptions.speakerLabels ?? undefined;
       body.speakers_expected = assemblyaiOptions.speakersExpected ?? undefined;
       body.speech_threshold = assemblyaiOptions.speechThreshold ?? undefined;
@@ -295,8 +303,10 @@ export class AssemblyAITranscriptionModel implements TranscriptionModelV1 {
       body.summary_model = assemblyaiOptions.summaryModel ?? undefined;
       body.summary_type = assemblyaiOptions.summaryType ?? undefined;
       body.topics = assemblyaiOptions.topics ?? undefined;
-      body.webhook_auth_header_name = assemblyaiOptions.webhookAuthHeaderName ?? undefined;
-      body.webhook_auth_header_value = assemblyaiOptions.webhookAuthHeaderValue ?? undefined;
+      body.webhook_auth_header_name =
+        assemblyaiOptions.webhookAuthHeaderName ?? undefined;
+      body.webhook_auth_header_value =
+        assemblyaiOptions.webhookAuthHeaderValue ?? undefined;
       body.webhook_url = assemblyaiOptions.webhookUrl ?? undefined;
       body.word_boost = assemblyaiOptions.wordBoost ?? undefined;
     }
@@ -341,7 +351,8 @@ export class AssemblyAITranscriptionModel implements TranscriptionModelV1 {
           endSecond: word.end,
         })) ?? [],
       language: response.language_code ?? undefined,
-      durationInSeconds: response.audio_duration ?? response.words?.at(-1)?.end ?? undefined,
+      durationInSeconds:
+        response.audio_duration ?? response.words?.at(-1)?.end ?? undefined,
       warnings,
       response: {
         timestamp: currentDate,
@@ -361,43 +372,151 @@ const assemblyaiTranscriptionResponseSchema = z.object({
   auto_highlights: z.boolean(),
   redact_pii: z.boolean(),
   summarization: z.boolean(),
-  language_code: z.enum([
-    'en', 'en_au', 'en_uk', 'en_us', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'af', 'sq', 'am', 'ar', 'hy', 'as', 'az', 'ba', 
-    'eu', 'be', 'bn', 'bs', 'br', 'bg', 'my', 'ca', 'zh', 'hr', 'cs', 'da', 'et', 'fo', 'fi', 'gl', 'ka', 'el', 'gu', 
-    'ht', 'ha', 'haw', 'he', 'hi', 'hu', 'is', 'id', 'ja', 'jw', 'kn', 'kk', 'km', 'ko', 'lo', 'la', 'lv', 'ln', 'lt', 
-    'lb', 'mk', 'mg', 'ms', 'ml', 'mt', 'mi', 'mr', 'mn', 'ne', 'no', 'nn', 'oc', 'pa', 'ps', 'fa', 'pl', 'ro', 'ru', 
-    'sa', 'sr', 'sn', 'sd', 'si', 'sk', 'sl', 'so', 'su', 'sw', 'sv', 'tl', 'tg', 'ta', 'tt', 'te', 'th', 'bo', 'tr', 
-    'tk', 'uk', 'ur', 'uz', 'vi', 'cy', 'yi', 'yo'
-  ]).nullish(),
+  language_code: z
+    .enum([
+      'en',
+      'en_au',
+      'en_uk',
+      'en_us',
+      'es',
+      'fr',
+      'de',
+      'it',
+      'pt',
+      'nl',
+      'af',
+      'sq',
+      'am',
+      'ar',
+      'hy',
+      'as',
+      'az',
+      'ba',
+      'eu',
+      'be',
+      'bn',
+      'bs',
+      'br',
+      'bg',
+      'my',
+      'ca',
+      'zh',
+      'hr',
+      'cs',
+      'da',
+      'et',
+      'fo',
+      'fi',
+      'gl',
+      'ka',
+      'el',
+      'gu',
+      'ht',
+      'ha',
+      'haw',
+      'he',
+      'hi',
+      'hu',
+      'is',
+      'id',
+      'ja',
+      'jw',
+      'kn',
+      'kk',
+      'km',
+      'ko',
+      'lo',
+      'la',
+      'lv',
+      'ln',
+      'lt',
+      'lb',
+      'mk',
+      'mg',
+      'ms',
+      'ml',
+      'mt',
+      'mi',
+      'mr',
+      'mn',
+      'ne',
+      'no',
+      'nn',
+      'oc',
+      'pa',
+      'ps',
+      'fa',
+      'pl',
+      'ro',
+      'ru',
+      'sa',
+      'sr',
+      'sn',
+      'sd',
+      'si',
+      'sk',
+      'sl',
+      'so',
+      'su',
+      'sw',
+      'sv',
+      'tl',
+      'tg',
+      'ta',
+      'tt',
+      'te',
+      'th',
+      'bo',
+      'tr',
+      'tk',
+      'uk',
+      'ur',
+      'uz',
+      'vi',
+      'cy',
+      'yi',
+      'yo',
+    ])
+    .nullish(),
   language_detection: z.boolean().nullish(),
   language_confidence_threshold: z.number().nullish(),
   language_confidence: z.number().min(0).max(1).nullish(),
   speech_model: z.enum(['best', 'nano']).nullish(),
   text: z.string().nullish(),
-  words: z.array(z.object({
-    confidence: z.number().min(0).max(1),
-    start: z.number(),
-    end: z.number(),
-    text: z.string(),
-    channel: z.string().nullish(),
-    speaker: z.string().nullish()
-  })).nullish(),
-  utterances: z.array(z.object({
-    confidence: z.number().min(0).max(1),
-    start: z.number(),
-    end: z.number(),
-    text: z.string(),
-    words: z.array(z.object({
-      confidence: z.number().min(0).max(1),
-      start: z.number(),
-      end: z.number(),
-      text: z.string(),
-      channel: z.string().nullish(),
-      speaker: z.string().nullish()
-    })),
-    speaker: z.string(),
-    channel: z.string().nullish()
-  })).nullish(),
+  words: z
+    .array(
+      z.object({
+        confidence: z.number().min(0).max(1),
+        start: z.number(),
+        end: z.number(),
+        text: z.string(),
+        channel: z.string().nullish(),
+        speaker: z.string().nullish(),
+      }),
+    )
+    .nullish(),
+  utterances: z
+    .array(
+      z.object({
+        confidence: z.number().min(0).max(1),
+        start: z.number(),
+        end: z.number(),
+        text: z.string(),
+        words: z.array(
+          z.object({
+            confidence: z.number().min(0).max(1),
+            start: z.number(),
+            end: z.number(),
+            text: z.string(),
+            channel: z.string().nullish(),
+            speaker: z.string().nullish(),
+          }),
+        ),
+        speaker: z.string(),
+        channel: z.string().nullish(),
+      }),
+    )
+    .nullish(),
   confidence: z.number().min(0).max(1).nullish(),
   audio_duration: z.number().nullish(),
   punctuate: z.boolean().nullish(),
@@ -408,18 +527,24 @@ const assemblyaiTranscriptionResponseSchema = z.object({
   webhook_url: z.string().nullish(),
   webhook_status_code: z.number().nullish(),
   webhook_auth_header_name: z.string().nullish(),
-  auto_highlights_result: z.object({
-    status: z.enum(['success', 'unavailable']),
-    results: z.array(z.object({
-      count: z.number(),
-      rank: z.number(),
-      text: z.string(),
-      timestamps: z.array(z.object({
-        start: z.number(),
-        end: z.number()
-      }))
-    }))
-  }).nullish(),
+  auto_highlights_result: z
+    .object({
+      status: z.enum(['success', 'unavailable']),
+      results: z.array(
+        z.object({
+          count: z.number(),
+          rank: z.number(),
+          text: z.string(),
+          timestamps: z.array(
+            z.object({
+              start: z.number(),
+              end: z.number(),
+            }),
+          ),
+        }),
+      ),
+    })
+    .nullish(),
   audio_start_from: z.number().nullish(),
   audio_end_at: z.number().nullish(),
   word_boost: z.array(z.string()).nullish(),
@@ -427,98 +552,213 @@ const assemblyaiTranscriptionResponseSchema = z.object({
   filter_profanity: z.boolean().nullish(),
   redact_pii_audio: z.boolean().nullish(),
   redact_pii_audio_quality: z.enum(['mp3', 'wav']).nullish(),
-  redact_pii_policies: z.array(z.enum([
-    'account_number', 'banking_information', 'blood_type', 'credit_card_cvv', 'credit_card_expiration', 'credit_card_number',
-    'date', 'date_interval', 'date_of_birth', 'drivers_license', 'drug', 'duration', 'email_address', 'event', 'filename',
-    'gender_sexuality', 'healthcare_number', 'injury', 'ip_address', 'language', 'location', 'marital_status', 'medical_condition',
-    'medical_process', 'money_amount', 'nationality', 'number_sequence', 'occupation', 'organization', 'passport_number',
-    'password', 'person_age', 'person_name', 'phone_number', 'physical_attribute', 'political_affiliation', 'religion',
-    'statistics', 'time', 'url', 'us_social_security_number', 'username', 'vehicle_id', 'zodiac_sign'
-  ])).nullish(),
+  redact_pii_policies: z
+    .array(
+      z.enum([
+        'account_number',
+        'banking_information',
+        'blood_type',
+        'credit_card_cvv',
+        'credit_card_expiration',
+        'credit_card_number',
+        'date',
+        'date_interval',
+        'date_of_birth',
+        'drivers_license',
+        'drug',
+        'duration',
+        'email_address',
+        'event',
+        'filename',
+        'gender_sexuality',
+        'healthcare_number',
+        'injury',
+        'ip_address',
+        'language',
+        'location',
+        'marital_status',
+        'medical_condition',
+        'medical_process',
+        'money_amount',
+        'nationality',
+        'number_sequence',
+        'occupation',
+        'organization',
+        'passport_number',
+        'password',
+        'person_age',
+        'person_name',
+        'phone_number',
+        'physical_attribute',
+        'political_affiliation',
+        'religion',
+        'statistics',
+        'time',
+        'url',
+        'us_social_security_number',
+        'username',
+        'vehicle_id',
+        'zodiac_sign',
+      ]),
+    )
+    .nullish(),
   redact_pii_sub: z.enum(['entity_name', 'hash']).nullish(),
   speaker_labels: z.boolean().nullish(),
   speakers_expected: z.number().nullish(),
   content_safety: z.boolean().nullish(),
-  content_safety_labels: z.object({
-    status: z.enum(['success', 'unavailable']),
-    results: z.array(z.object({
-      text: z.string(),
-      labels: z.array(z.object({
-        label: z.string(),
-        confidence: z.number().min(0).max(1),
-        severity: z.number().min(0).max(1)
-      })),
-      sentences_idx_start: z.number(),
-      sentences_idx_end: z.number(),
-      timestamp: z.object({
-        start: z.number(),
-        end: z.number()
-      })
-    })),
-    summary: z.record(z.string(), z.number()),
-    severity_score_summary: z.record(z.string(), z.object({
-      low: z.number().min(0).max(1),
-      medium: z.number().min(0).max(1),
-      high: z.number().min(0).max(1)
-    }))
-  }).nullish(),
+  content_safety_labels: z
+    .object({
+      status: z.enum(['success', 'unavailable']),
+      results: z.array(
+        z.object({
+          text: z.string(),
+          labels: z.array(
+            z.object({
+              label: z.string(),
+              confidence: z.number().min(0).max(1),
+              severity: z.number().min(0).max(1),
+            }),
+          ),
+          sentences_idx_start: z.number(),
+          sentences_idx_end: z.number(),
+          timestamp: z.object({
+            start: z.number(),
+            end: z.number(),
+          }),
+        }),
+      ),
+      summary: z.record(z.string(), z.number()),
+      severity_score_summary: z.record(
+        z.string(),
+        z.object({
+          low: z.number().min(0).max(1),
+          medium: z.number().min(0).max(1),
+          high: z.number().min(0).max(1),
+        }),
+      ),
+    })
+    .nullish(),
   iab_categories: z.boolean().nullish(),
-  iab_categories_result: z.object({
-    status: z.enum(['success', 'unavailable']),
-    results: z.array(z.object({
-      text: z.string(),
-      labels: z.array(z.object({
-        relevance: z.number().min(0).max(1),
-        label: z.string()
-      })).nullish(),
-      timestamp: z.object({
-        start: z.number(),
-        end: z.number()
-      }).nullish()
-    })),
-    summary: z.record(z.string(), z.number())
-  }).nullish(),
-  custom_spelling: z.array(z.object({
-    from: z.array(z.string()),
-    to: z.string()
-  })).nullish(),
+  iab_categories_result: z
+    .object({
+      status: z.enum(['success', 'unavailable']),
+      results: z.array(
+        z.object({
+          text: z.string(),
+          labels: z
+            .array(
+              z.object({
+                relevance: z.number().min(0).max(1),
+                label: z.string(),
+              }),
+            )
+            .nullish(),
+          timestamp: z
+            .object({
+              start: z.number(),
+              end: z.number(),
+            })
+            .nullish(),
+        }),
+      ),
+      summary: z.record(z.string(), z.number()),
+    })
+    .nullish(),
+  custom_spelling: z
+    .array(
+      z.object({
+        from: z.array(z.string()),
+        to: z.string(),
+      }),
+    )
+    .nullish(),
   auto_chapters: z.boolean().nullish(),
-  chapters: z.array(z.object({
-    gist: z.string(),
-    headline: z.string(),
-    summary: z.string(),
-    start: z.number(),
-    end: z.number()
-  })).nullish(),
+  chapters: z
+    .array(
+      z.object({
+        gist: z.string(),
+        headline: z.string(),
+        summary: z.string(),
+        start: z.number(),
+        end: z.number(),
+      }),
+    )
+    .nullish(),
   summary_type: z.string().nullish(),
   summary_model: z.string().nullish(),
   summary: z.string().nullish(),
   topics: z.array(z.string()).nullish(),
   sentiment_analysis: z.boolean().nullish(),
-  sentiment_analysis_results: z.array(z.object({
-    text: z.string(),
-    start: z.number(),
-    end: z.number(),
-    sentiment: z.enum(['POSITIVE', 'NEUTRAL', 'NEGATIVE']),
-    confidence: z.number().min(0).max(1),
-    channel: z.string().nullish(),
-    speaker: z.string().nullish()
-  })).nullish(),
+  sentiment_analysis_results: z
+    .array(
+      z.object({
+        text: z.string(),
+        start: z.number(),
+        end: z.number(),
+        sentiment: z.enum(['POSITIVE', 'NEUTRAL', 'NEGATIVE']),
+        confidence: z.number().min(0).max(1),
+        channel: z.string().nullish(),
+        speaker: z.string().nullish(),
+      }),
+    )
+    .nullish(),
   entity_detection: z.boolean().nullish(),
-  entities: z.array(z.object({
-    entity_type: z.enum([
-      'account_number', 'banking_information', 'blood_type', 'credit_card_cvv', 'credit_card_expiration', 'credit_card_number',
-      'date', 'date_interval', 'date_of_birth', 'drivers_license', 'drug', 'duration', 'email_address', 'event', 'filename',
-      'gender_sexuality', 'healthcare_number', 'injury', 'ip_address', 'language', 'location', 'marital_status', 'medical_condition',
-      'medical_process', 'money_amount', 'nationality', 'number_sequence', 'occupation', 'organization', 'passport_number',
-      'password', 'person_age', 'person_name', 'phone_number', 'physical_attribute', 'political_affiliation', 'religion',
-      'statistics', 'time', 'url', 'us_social_security_number', 'username', 'vehicle_id', 'zodiac_sign'
-    ]),
-    text: z.string(),
-    start: z.number(),
-    end: z.number()
-  })).nullish(),
+  entities: z
+    .array(
+      z.object({
+        entity_type: z.enum([
+          'account_number',
+          'banking_information',
+          'blood_type',
+          'credit_card_cvv',
+          'credit_card_expiration',
+          'credit_card_number',
+          'date',
+          'date_interval',
+          'date_of_birth',
+          'drivers_license',
+          'drug',
+          'duration',
+          'email_address',
+          'event',
+          'filename',
+          'gender_sexuality',
+          'healthcare_number',
+          'injury',
+          'ip_address',
+          'language',
+          'location',
+          'marital_status',
+          'medical_condition',
+          'medical_process',
+          'money_amount',
+          'nationality',
+          'number_sequence',
+          'occupation',
+          'organization',
+          'passport_number',
+          'password',
+          'person_age',
+          'person_name',
+          'phone_number',
+          'physical_attribute',
+          'political_affiliation',
+          'religion',
+          'statistics',
+          'time',
+          'url',
+          'us_social_security_number',
+          'username',
+          'vehicle_id',
+          'zodiac_sign',
+        ]),
+        text: z.string(),
+        start: z.number(),
+        end: z.number(),
+      }),
+    )
+    .nullish(),
   speech_threshold: z.number().nullish(),
   throttled: z.boolean().nullish(),
-  error: z.string().nullish()
+  error: z.string().nullish(),
 });

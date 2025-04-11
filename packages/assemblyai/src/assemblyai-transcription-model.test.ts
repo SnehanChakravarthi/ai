@@ -14,7 +14,7 @@ const server = createTestServer({
     response: {
       type: 'json-value',
       body: {
-        upload_url: 'https://storage.assemblyai.com/mock-upload-url'
+        upload_url: 'https://storage.assemblyai.com/mock-upload-url',
       },
     },
   },
@@ -301,7 +301,7 @@ describe('doGenerate', () => {
     });
 
     expect(server.calls[1].requestHeaders).toMatchObject({
-      'authorization': 'test-api-key',
+      authorization: 'test-api-key',
       'content-type': 'application/json',
       'custom-provider-header': 'provider-header-value',
       'custom-request-header': 'request-header-value',

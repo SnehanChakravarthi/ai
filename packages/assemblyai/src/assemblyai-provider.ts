@@ -43,7 +43,7 @@ export function createAssemblyAI(
   options: AssemblyAIProviderSettings = {},
 ): AssemblyAIProvider {
   const getHeaders = () => ({
-    'authorization': loadApiKey({
+    authorization: loadApiKey({
       apiKey: options.apiKey,
       environmentVariableName: 'ASSEMBLYAI_API_KEY',
       description: 'AssemblyAI',

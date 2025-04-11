@@ -1,3 +1,1 @@
-export type AssemblyAITranscriptionModelId =
-  | 'best'
-  | 'nano';
+export type AssemblyAITranscriptionModelId = 'best' | 'nano';
