@@ -46,7 +46,7 @@ export type OpenAIResponsesTool =
       type: 'function';
       name: string;
       description: string | undefined;
-      parameters: JSONSchema7;
+      parameters?: JSONSchema7;
       strict?: boolean;
     }
   | {

@@ -83,7 +83,8 @@ export function prepareTools({
       functionDeclarations.push({
         name: tool.name,
         description: tool.description ?? '',
-        parameters: convertJSONSchemaToOpenAPISchema(tool.parameters),
+        parameters:
+          tool.parameters != null && convertJSONSchemaToOpenAPISchema(tool.parameters),
       });
     }
   }

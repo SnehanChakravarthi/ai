@@ -19,7 +19,7 @@ export function prepareTools({
     function: {
       name: string;
       description: string | undefined;
-      parameters: JSONSchema7;
+      parameters?: JSONSchema7;
       strict?: boolean;
     };
   }[];
@@ -45,7 +45,7 @@ export function prepareTools({
     function: {
       name: string;
       description: string | undefined;
-      parameters: JSONSchema7;
+      parameters?: JSONSchema7;
       strict: boolean | undefined;
     };
   }> = [];

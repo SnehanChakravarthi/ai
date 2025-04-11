@@ -28,7 +28,6 @@ import { StepResult } from './step-result';
 import { streamText } from './stream-text';
 import { StreamTextResult, TextStreamPart } from './stream-text-result';
 import { ToolSet } from './tool-set';
-
 const defaultSettings = () =>
   ({
     prompt: 'prompt',
@@ -3429,19 +3428,13 @@ describe('streamText', () => {
               }
 
               // assuming test arg structure:
-              if (chunk.type === 'tool-call') {
-                chunk.args = {
-                  ...chunk.args,
-                  value: chunk.args.value.toUpperCase(),
-                };
+              if (chunk.type === 'tool-call' && chunk.toolName === 'value' && typeof chunk.args === 'string') {
+                chunk.args = chunk.args.toUpperCase() as any;
               }
 
-              if (chunk.type === 'tool-result') {
+              if (chunk.type === 'tool-result' && chunk.toolName === 'value' && typeof chunk.args === 'string') {
                 chunk.result = chunk.result.toUpperCase();
-                chunk.args = {
-                  ...chunk.args,
-                  value: chunk.args.value.toUpperCase(),
-                };
+                  chunk.args = chunk.args.toUpperCase() as any;
               }
 
               if (chunk.type === 'step-finish') {

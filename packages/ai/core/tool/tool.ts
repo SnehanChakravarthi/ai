@@ -1,16 +1,10 @@
-import { Schema } from '../util';
-import { z } from 'zod';
 import { ToolResultContent } from '../prompt/tool-result-content';
 import { CoreMessage } from '../prompt/message';
+import { z } from 'zod';
+import { Schema } from '../util';
+import { JSONObject, JSONValue } from '@ai-sdk/provider';
 
-export type ToolParameters = z.ZodTypeAny | Schema<any>;
-
-export type inferParameters<PARAMETERS extends ToolParameters> =
-  PARAMETERS extends Schema<any>
-    ? PARAMETERS['_type']
-    : PARAMETERS extends z.ZodTypeAny
-      ? z.infer<PARAMETERS>
-      : never;
+export type ToolParameters<T = JSONObject> = z.Schema<T> | Schema<T>;
 
 export interface ToolExecutionOptions {
   /**
@@ -36,14 +30,10 @@ This enables the language model to generate the input.
 
 The tool can also contain an optional execute function for the actual execution function of the tool.
  */
-export type Tool<PARAMETERS extends ToolParameters = any, RESULT = any> = {
-  /**
-The schema of the input that the tool expects. The language model will use this to generate the input.
-It is also used to validate the output of the language model.
-Use descriptions to make the input understandable for the language model.
-   */
-  parameters: PARAMETERS;
-
+export type Tool<
+  PARAMETERS extends JSONValue | unknown | never = any,
+  RESULT = any,
+> = {
   /**
 An optional description of what the tool does.
 Will be used by the language model to decide whether to use the tool.
@@ -54,79 +44,80 @@ Not used for provider-defined tools.
   /**
 Optional conversion function that maps the tool result to multi-part tool content for LLMs.
    */
-  experimental_toToolResultContent?: (result: RESULT) => ToolResultContent;
-
-  /**
+  experimental_toToolResultContent?: [RESULT] extends [never]
+    ? undefined
+    : (result: RESULT) => ToolResultContent;
+} & ([PARAMETERS] extends [never]
+  ? {
+      parameters?: 0 extends 1 & PARAMETERS
+        ? ToolParameters<PARAMETERS>
+        : undefined;
+    }
+  : {
+      /**
+The schema of the input that the tool expects. The language model will use this to generate the input.
+It is also used to validate the output of the language model.
+Use descriptions to make the input understandable for the language model.
+   */
+      parameters: ToolParameters<PARAMETERS>;
+    }) &
+  ([RESULT] extends [never]
+    ? { execute?: undefined }
+    : {
+        /**
 An async function that is called with the arguments from the tool call and produces a result.
 If not provided, the tool will not be executed automatically.
 
 @args is the input of the tool call.
 @options.abortSignal is a signal that can be used to abort the tool call.
-   */
-  execute?: (
-    args: inferParameters<PARAMETERS>,
-    options: ToolExecutionOptions,
-  ) => PromiseLike<RESULT>;
-} & (
-  | {
-      /**
+     */
+        execute?: (
+          args: [PARAMETERS] extends [never] ? undefined : PARAMETERS,
+          options: ToolExecutionOptions,
+        ) => PromiseLike<RESULT>;
+      }) &
+  (
+    | {
+        /**
 Function tool.
        */
-      type?: undefined | 'function';
-    }
-  | {
-      /**
+        type?: undefined | 'function';
+      }
+    | {
+        /**
 Provider-defined tool.
        */
-      type: 'provider-defined';
+        type: 'provider-defined';
 
-      /**
+        /**
 The ID of the tool. Should follow the format `<provider-name>.<tool-name>`.
        */
-      id: `${string}.${string}`;
+        id: `${string}.${string}`;
 
-      /**
+        /**
 The arguments for configuring the tool. Must match the expected arguments defined by the provider for this tool.
        */
-      args: Record<string, unknown>;
-    }
-);
-
-/**
- * @deprecated Use `Tool` instead.
- */
-// TODO remove in v5
-export type CoreTool<
-  PARAMETERS extends ToolParameters = any,
-  RESULT = any,
-> = Tool<PARAMETERS, RESULT>;
+        args: Record<string, unknown>;
+      }
+  );
 
 /**
 Helper function for inferring the execute args of a tool.
  */
-// Note: special type inference is needed for the execute function args to make sure they are inferred correctly.
-export function tool<PARAMETERS extends ToolParameters, RESULT>(
-  tool: Tool<PARAMETERS, RESULT> & {
-    execute: (
-      args: inferParameters<PARAMETERS>,
-      options: ToolExecutionOptions,
-    ) => PromiseLike<RESULT>;
-  },
-): Tool<PARAMETERS, RESULT> & {
-  execute: (
-    args: inferParameters<PARAMETERS>,
-    options: ToolExecutionOptions,
-  ) => PromiseLike<RESULT>;
-};
-export function tool<PARAMETERS extends ToolParameters, RESULT>(
-  tool: Tool<PARAMETERS, RESULT> & {
-    execute?: undefined;
-  },
-): Tool<PARAMETERS, RESULT> & {
-  execute: undefined;
-};
-export function tool<PARAMETERS extends ToolParameters, RESULT = any>(
+export function tool<PARAMETERS>(
+  tool: Tool<PARAMETERS, never>,
+): Tool<PARAMETERS, never>;
+export function tool<RESULT>(tool: Tool<never, RESULT>): Tool<never, RESULT>;
+export function tool<PARAMETERS, RESULT>(
   tool: Tool<PARAMETERS, RESULT>,
-): Tool<PARAMETERS, RESULT> {
+): Tool<PARAMETERS, RESULT>;
+export function tool(tool: any): any {
   return tool;
 }
+
+export type MappedTool<T extends Tool | JSONObject, RESULT extends any> =
+  T extends Tool<infer P>
+    ? Tool<P, RESULT>
+    : T extends JSONObject
+      ? Tool<T, RESULT>
+      : never;

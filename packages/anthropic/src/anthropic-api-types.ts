@@ -91,7 +91,7 @@ export type AnthropicTool =
   | {
       name: string;
       description: string | undefined;
-      input_schema: JSONSchema7;
+      input_schema?: JSONSchema7;
     }
   | {
       name: string;

@@ -22,6 +22,6 @@ export type ToolCallRepairFunction<TOOLS extends ToolSet> = (options: {
   messages: CoreMessage[];
   toolCall: LanguageModelV2FunctionToolCall;
   tools: TOOLS;
-  parameterSchema: (options: { toolName: string }) => JSONSchema7;
+  parameterSchema: (options: { toolName: string }) => JSONSchema7 | undefined;
   error: NoSuchToolError | InvalidToolArgumentsError;
 }) => Promise<LanguageModelV2FunctionToolCall | null>;

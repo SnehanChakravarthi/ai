@@ -5,7 +5,6 @@ import { InvalidToolArgumentsError } from '../../errors/invalid-tool-arguments-e
 import { NoSuchToolError } from '../../errors/no-such-tool-error';
 import { ToolCallRepairError } from '../../errors/tool-call-repair-error';
 import { CoreMessage } from '../prompt';
-import { inferParameters } from '../tool/tool';
 import { ToolCallUnion } from './tool-call';
 import { ToolCallRepairFunction } from './tool-call-repair';
 import { ToolSet } from './tool-set';
@@ -46,8 +45,10 @@ export async function parseToolCall<TOOLS extends ToolSet>({
       repairedToolCall = await repairToolCall({
         toolCall,
         tools,
-        parameterSchema: ({ toolName }) =>
-          asSchema(tools[toolName].parameters).jsonSchema,
+        parameterSchema: ({ toolName }) => {
+          const { parameters } = tools[toolName];
+          return parameters != null && asSchema(parameters).jsonSchema;
+        },
         system,
         messages,
         error,
@@ -86,18 +87,17 @@ async function doParseToolCall<TOOLS extends ToolSet>({
     });
   }
 
-  const schema = asSchema(tool.parameters) as Schema<
-    inferParameters<TOOLS[keyof TOOLS]['parameters']>
-  >;
+  const schema = tool.parameters && asSchema(tool.parameters);
 
   // when the tool call has no arguments, we try passing an empty object to the schema
   // (many LLMs generate empty strings for tool calls with no arguments)
   const parseResult =
-    toolCall.args.trim() === ''
+    schema &&
+    (toolCall.args.trim() === ''
       ? safeValidateTypes({ value: {}, schema })
-      : safeParseJSON({ text: toolCall.args, schema });
+      : safeParseJSON({ text: toolCall.args, schema }));
 
-  if (parseResult.success === false) {
+  if (parseResult?.success === false) {
     throw new InvalidToolArgumentsError({
       toolName,
       toolArgs: toolCall.args,
@@ -109,6 +109,6 @@ async function doParseToolCall<TOOLS extends ToolSet>({
     type: 'tool-call',
     toolCallId: toolCall.toolCallId,
     toolName,
-    args: parseResult.value,
+    args: parseResult?.value,
   };
 }
