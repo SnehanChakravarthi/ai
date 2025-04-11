@@ -47,7 +47,9 @@ export async function parseToolCall<TOOLS extends ToolSet>({
         tools,
         parameterSchema: ({ toolName }) => {
           const { parameters } = tools[toolName];
-          return parameters != null && asSchema(parameters).jsonSchema;
+          return parameters != null
+            ? asSchema(parameters).jsonSchema
+            : undefined;
         },
         system,
         messages,
