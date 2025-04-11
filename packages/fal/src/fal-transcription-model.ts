@@ -135,7 +135,7 @@ const falProviderOptionsSchema = z.object({
   /**
    * Level of the chunks to return. Either segment or word. Default value: "segment"
    */
-  chunk_level: z.enum(['segment', 'word']).nullish(),
+  chunkLevel: z.enum(['segment', 'word']).nullish(),
 
   /**
    * Version of the model to use. All of the models are the Whisper large variant. Default value: "3"
@@ -145,12 +145,12 @@ const falProviderOptionsSchema = z.object({
   /**
    * Default value: 64
    */
-  batch_size: z.number().nullish(),
+  batchSize: z.number().nullish(),
 
   /**
    * Number of speakers in the audio file. Defaults to null. If not provided, the number of speakers will be automatically detected.
    */
-  num_speakers: z.number().nullable().nullish(),
+  numSpeakers: z.number().nullable().nullish(),
 });
 
 export type FalTranscriptionCallOptions = z.infer<
@@ -201,22 +201,21 @@ export class FalTranscriptionModel implements TranscriptionModelV1 {
       task: 'transcribe',
       diarize: true,
       chunk_level: 'word',
-      model_id: this.modelId,
     };
 
     // Add provider-specific options
     if (falOptions) {
       body.language = falOptions.language;
       body.version = falOptions.version ?? undefined;
-      body.batch_size = falOptions.batch_size ?? undefined;
-      body.num_speakers = falOptions.num_speakers ?? undefined;
+      body.batch_size = falOptions.batchSize ?? undefined;
+      body.num_speakers = falOptions.numSpeakers ?? undefined;
 
       if (falOptions.diarize === false) {
         body.diarize = false;
       }
 
-      if (falOptions.chunk_level) {
-        body.chunk_level = falOptions.chunk_level;
+      if (falOptions.chunkLevel) {
+        body.chunk_level = falOptions.chunkLevel;
       }
     }
 
@@ -238,7 +237,7 @@ export class FalTranscriptionModel implements TranscriptionModelV1 {
       rawValue: rawResponse,
     } = await postJsonToApi({
       url: this.config.url({
-        path: '/v1/speech-to-text',
+        path: '',
         modelId: this.modelId,
       }),
       headers: combineHeaders(this.config.headers(), options.headers),
@@ -256,11 +255,11 @@ export class FalTranscriptionModel implements TranscriptionModelV1 {
       segments:
         response.chunks?.map(chunk => ({
           text: chunk.text,
-          startSecond: chunk.timestamp?.[0] ?? 0,
-          endSecond: chunk.timestamp?.[1] ?? 0,
+          startSecond: chunk.timestamp?.at(0) ?? 0,
+          endSecond: chunk.timestamp?.at(1) ?? 0,
         })) ?? [],
-      language: response.inferred_languages?.[0] ?? undefined,
-      durationInSeconds: response.chunks?.at(-1)?.timestamp?.[1] ?? undefined,
+      language: response.inferred_languages?.at(0) ?? undefined,
+      durationInSeconds: response.chunks?.at(-1)?.timestamp?.at(1) ?? undefined,
       warnings,
       response: {
         timestamp: currentDate,
